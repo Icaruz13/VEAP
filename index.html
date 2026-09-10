@@ -1,0 +1,126 @@
+﻿// ============================================
+// VEAP — Vila Ema Auto Peças
+// Script principal do site
+// ============================================
+
+/* ---------- CONFIGURAÇÕES ---------- */
+
+// WhatsApp: somente números, com DDI (55) e DDD (11)
+const WHATSAPP_NUMBER = '5511962082138';
+const WHATSAPP_MESSAGE = encodeURIComponent(
+  'Olá! Vim pelo site da VEAP e gostaria de mais informações.'
+);
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
+
+// Aplica o link do WhatsApp em todos os botões com o atributo data-whatsapp
+document.querySelectorAll('[data-whatsapp]').forEach((el) => {
+  el.setAttribute('href', WHATSAPP_URL);
+  el.setAttribute('target', '_blank');
+  el.setAttribute('rel', 'noopener');
+});
+
+/* ---------- MARCAS E FORNECEDORES ---------- */
+// Edite estas listas para adicionar ou remover marcas.
+
+const MARCAS_NACIONAIS = [
+  'Fiat', 'Volkswagen', 'Chevrolet', 'Ford', 'Toyota', 'Honda',
+  'Hyundai', 'Renault', 'Peugeot', 'Citroën', 'Jeep', 'Nissan',
+  'Caoa Chery', 'BYD', 'GWM'
+];
+
+const MARCAS_IMPORTADAS = [
+  'BMW', 'Mercedes-Benz', 'Audi', 'Volvo', 'Land Rover', 'Jaguar',
+  'Porsche', 'Mitsubishi', 'Subaru', 'Suzuki', 'Kia', 'Lexus',
+  'Mini', 'Tesla', 'Ferrari', 'Lamborghini', 'Maserati', 'Bentley',
+  'Rolls-Royce', 'Alfa Romeo', 'Dodge', 'Ram', 'Chrysler', 'Omoda'
+];
+
+function renderMarcas() {
+  const criarCards = (lista) =>
+    lista.map((marca) => `<div class="brand-card">${marca}</div>`).join('');
+
+  document.getElementById('marcasNacionais').innerHTML = criarCards(MARCAS_NACIONAIS);
+  document.getElementById('marcasImportadas').innerHTML = criarCards(MARCAS_IMPORTADAS);
+}
+
+/* ---------- PRODUTOS ---------- */
+// Para cadastrar um produto, adicione um novo item no array abaixo.
+// Campos: nome, categoria, descricao, preco
+// Exemplo:
+// { nome: 'Amortecedor Dianteiro', categoria: 'Suspensão',
+//   descricao: 'Amortecedor original para diversos modelos.', preco: 'Sob consulta' }
+
+const PRODUTOS = [
+  {
+    nome: 'Pastilha de Freio',
+    categoria: 'Freios',
+    descricao: 'Pastilhas de freio para veículos nacionais e importados.',
+    preco: 'Sob consulta'
+  },
+  {
+    nome: 'Filtro de Óleo',
+    categoria: 'Filtros',
+    descricao: 'Filtros de óleo com alta eficiência de filtragem.',
+    preco: 'Sob consulta'
+  },
+  {
+    nome: 'Amortecedor',
+    categoria: 'Suspensão',
+    descricao: 'Amortecedores dianteiros e traseiros para diversos modelos.',
+    preco: 'Sob consulta'
+  },
+  {
+    nome: 'Bateria',
+    categoria: 'Elétrica',
+    descricao: 'Baterias automotivas de alta durabilidade.',
+    preco: 'Sob consulta'
+  }
+];
+
+function renderProdutos() {
+  const grid = document.getElementById('productsGrid');
+
+  if (PRODUTOS.length === 0) {
+    grid.innerHTML =
+      '<p class="product-empty">Nosso catálogo está sendo montado. Em breve, todos os produtos estarão disponíveis aqui!</p>';
+    return;
+  }
+
+  grid.innerHTML = PRODUTOS.map(
+    (p) => `
+      <article class="product-card">
+        <span class="product-tag">${p.categoria}</span>
+        <h3 class="product-name">${p.nome}</h3>
+        <p class="product-desc">${p.descricao}</p>
+        <span class="product-price">${p.preco}</span>
+      </article>
+    `
+  ).join('');
+}
+
+/* ---------- MENU MOBILE ---------- */
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+
+menuToggle.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded', navLinks.classList.contains('open'));
+});
+
+// Fecha o menu ao clicar em um link
+navLinks.querySelectorAll('a').forEach((link) => {
+  link.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+/* ---------- NAVBAR AO ROLAR ---------- */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* ---------- ANO NO RODAPÉ ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- INICIALIZAÇÃO ---------- */
+renderMarcas();
+renderProdutos();
