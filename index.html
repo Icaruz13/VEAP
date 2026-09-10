@@ -78,6 +78,7 @@
 
     .btn-outline:hover { border-color: var(--verde); color: var(--verde); }
 
+    /* ===== NAVBAR ===== */
     .navbar {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -91,10 +92,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 72px;
+      height: 80px;
     }
 
-    .brand-logo { height: 52px; width: auto; }
+    /* Logotipo do topo: maior (64px) */
+    .brand-logo {
+      height: 64px;
+      width: auto;
+      filter: drop-shadow(0 0 10px rgba(57, 255, 20, 0.55));
+      transition: filter 0.3s, transform 0.3s;
+    }
+
+    .brand-logo:hover {
+      filter: drop-shadow(0 0 18px rgba(57, 255, 20, 0.85));
+      transform: scale(1.05);
+    }
 
     .nav-links { display: flex; align-items: center; gap: 28px; }
 
@@ -127,14 +139,33 @@
       transition: 0.3s;
     }
 
+    /* ===== HERO ===== */
     .hero {
-      padding: 160px 0 100px;
+      padding: 190px 0 110px;
       background:
         repeating-linear-gradient(-45deg, rgba(57, 255, 20, 0.04) 0 2px, transparent 2px 26px),
-        radial-gradient(circle at 80% 20%, rgba(57, 255, 20, 0.12), transparent 45%),
+        radial-gradient(circle at 50% 15%, rgba(57, 255, 20, 0.16), transparent 55%),
         var(--preto);
       border-bottom: 1px solid var(--borda);
       overflow: hidden;
+      text-align: center;
+    }
+
+    .hero-inner { display: flex; flex-direction: column; align-items: center; }
+
+    /* Logotipo grande e destacado no centro da página principal */
+    .hero-logo {
+      width: min(300px, 60vw);
+      height: auto;
+      margin-bottom: 28px;
+      filter: drop-shadow(0 0 25px rgba(57, 255, 20, 0.7))
+              drop-shadow(0 0 60px rgba(57, 255, 20, 0.35));
+      animation: logo-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes logo-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
     }
 
     .hero-tag {
@@ -142,9 +173,9 @@
       font-family: var(--font-titulo);
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 0.95rem;
-      margin-bottom: 16px;
+      letter-spacing: 4px;
+      font-size: 1rem;
+      margin-bottom: 14px;
     }
 
     .hero-title {
@@ -158,19 +189,20 @@
     .highlight { color: var(--verde); text-shadow: var(--sombra-verde); }
 
     .hero-sub {
-      margin: 20px 0 32px;
+      margin: 20px auto 32px;
       max-width: 560px;
       color: var(--cinza);
       font-size: 1.05rem;
     }
 
-    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
 
     .hero-stats {
       display: flex;
-      gap: 40px;
+      gap: 48px;
       margin-top: 56px;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
     .stat strong {
@@ -208,6 +240,7 @@
 
     .section-sub { color: var(--cinza); margin-top: 12px; }
 
+    /* ===== MARCAS ===== */
     .marcas {
       background: var(--grafite);
       border-top: 1px solid var(--borda);
@@ -261,6 +294,7 @@
       transform: translateY(-3px);
     }
 
+    /* ===== PRODUTOS ===== */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -306,6 +340,7 @@
     .product-price { color: var(--verde); font-weight: 700; font-size: 1.05rem; }
     .product-empty { text-align: center; color: var(--cinza); padding: 40px 0; }
 
+    /* ===== DIFERENCIAIS ===== */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -333,16 +368,18 @@
 
     .feature-desc { color: var(--cinza); font-size: 0.9rem; }
 
+    /* ===== CONTATO ===== */
     .contato {
       background: var(--grafite);
       border-top: 1px solid var(--borda);
     }
 
     .contato-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      display: flex;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
+      gap: 20px;
     }
 
     .contato-info h2 {
@@ -352,7 +389,7 @@
       margin-bottom: 12px;
     }
 
-    .contato-info p { color: var(--cinza); margin-bottom: 24px; }
+    .contato-info p { color: var(--cinza); margin-bottom: 20px; }
 
     .contato-list {
       list-style: none;
@@ -361,18 +398,25 @@
       gap: 12px;
     }
 
-    .contato-list li { display: flex; gap: 10px; align-items: center; }
+    .contato-list li { display: flex; gap: 10px; align-items: center; justify-content: center; }
 
+    /* ===== RODAPÉ ===== */
     .footer {
       padding: 40px 0;
       border-top: 1px solid var(--borda);
       text-align: center;
     }
 
-    .footer-logo { height: 44px; margin: 0 auto 16px; }
+    .footer-logo {
+      height: 56px;
+      margin: 0 auto 16px;
+      filter: drop-shadow(0 0 10px rgba(57, 255, 20, 0.5));
+    }
+
     .footer p { color: var(--cinza); font-size: 0.9rem; }
     .footer-copy { margin-top: 12px; font-size: 0.8rem; }
 
+    /* ===== BOTÃO FLUTUANTE WHATSAPP ===== */
     .whatsapp-float {
       position: fixed;
       bottom: 24px;
@@ -396,12 +440,13 @@
       box-shadow: 0 8px 26px rgba(37, 211, 102, 0.55);
     }
 
+    /* ===== RESPONSIVO ===== */
     @media (max-width: 768px) {
       .menu-toggle { display: flex; }
 
       .nav-links {
         position: fixed;
-        top: 72px;
+        top: 80px;
         left: 0;
         right: 0;
         flex-direction: column;
@@ -414,8 +459,9 @@
       }
 
       .nav-links.open { transform: translateY(0); }
-      .contato-inner { grid-template-columns: 1fr; }
-      .hero { padding: 130px 0 80px; }
+      .hero { padding: 160px 0 80px; }
+      .hero-stats { gap: 28px; }
+      .brand-logo { height: 52px; }
     }
   </style>
 </head>
@@ -446,6 +492,10 @@
   <!-- HERO -->
   <section class="hero" id="inicio">
     <div class="container hero-inner">
+
+      <!-- Logotipo grande e destacado -->
+      <img src="logo-veap.png" alt="VEAP — Vila Ema Auto Peças" class="hero-logo" />
+
       <p class="hero-tag">⚡ Vila Ema Auto Peças</p>
       <h1 class="hero-title">A peça certa,<br />na <span class="highlight">hora certa</span>.</h1>
       <p class="hero-sub">
