@@ -161,7 +161,6 @@
       margin-bottom: 30px;
     }
 
-    /* Halo verde atrás do logotipo */
     .hero-logo-wrap::before {
       content: '';
       position: absolute;
@@ -315,7 +314,26 @@
 
     .carousel-slide .slide-caption span { color: var(--verde); }
 
-    /* Setas */
+    /* Aviso quando a imagem não carregar */
+    .img-fallback {
+      width: 100%;
+      height: 460px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--grafite);
+      color: var(--cinza);
+      font-family: var(--font-titulo);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .img-fallback small { color: var(--verde); text-transform: none; letter-spacing: 0; }
+
     .carousel-btn {
       position: absolute;
       top: 50%;
@@ -341,7 +359,6 @@
     .carousel-btn.prev { left: 14px; }
     .carousel-btn.next { right: 14px; }
 
-    /* Bolinhas de navegação */
     .carousel-dots {
       display: flex;
       justify-content: center;
@@ -373,6 +390,11 @@
     }
 
     .galeria-hint span { color: var(--verde); }
+
+    .galeria-actions {
+      text-align: center;
+      margin-top: 24px;
+    }
 
     /* ===== LIGHTBOX / GALERIA COMPLETA ===== */
     .lightbox {
@@ -417,7 +439,6 @@
 
     .lightbox-close:hover { border-color: var(--verde); color: var(--verde); }
 
-    /* Grade de miniaturas */
     .lightbox-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -460,7 +481,12 @@
       letter-spacing: 0.5px;
     }
 
-    /* Visualizador em tela cheia */
+    .lightbox-thumb .img-fallback {
+      height: 120px;
+      font-size: 0.7rem;
+    }
+
+    /* ===== VISUALIZADOR EM TELA CHEIA ===== */
     .viewer {
       position: fixed;
       inset: 0;
@@ -755,6 +781,7 @@
       .hero-stats { gap: 28px; }
       .brand-logo { height: 52px; }
       .carousel-slide img { height: 280px; }
+      .img-fallback { height: 280px; }
       .hero-logo-wrap::before { width: 300px; height: 300px; }
       .viewer-nav.prev { left: 8px; }
       .viewer-nav.next { right: 8px; }
@@ -812,7 +839,7 @@
     </div>
   </section>
 
-  <!-- GALERIA ANIMADA -->
+  <!-- ===== GALERIA ANIMADA ===== -->
   <section class="galeria" id="galeria">
     <div class="container">
       <div class="section-head">
@@ -823,7 +850,7 @@
 
       <div class="carousel" id="carousel">
         <div class="carousel-track" id="carouselTrack">
-          <!-- Slides gerados pelo JavaScript -->
+          <!-- Os slides são criados pelo JavaScript -->
         </div>
 
         <button class="carousel-btn prev" id="carouselPrev" aria-label="Foto anterior">&#10094;</button>
@@ -832,6 +859,10 @@
 
       <div class="carousel-dots" id="carouselDots"></div>
       <p class="galeria-hint">💡 Toque em uma foto para abrir a <span>galeria completa</span></p>
+
+      <div class="galeria-actions">
+        <button class="btn btn-outline btn-lg" id="btnGaleriaCompleta">Ver galeria completa</button>
+      </div>
     </div>
   </section>
 
@@ -978,9 +1009,7 @@
       'galeria-14.jpg'
     ];
 
-    // TODAS as imagens do repositório (galeria completa).
-    // >>> IMPORTANTE: ajuste esta lista para conter EXATAMENTE os arquivos
-    // que estão no seu repositório. Se tiver mais ou menos fotos, edite aqui.
+    // TODAS as imagens do repositório (galeria completa)
     const GALERIA_COMPLETA = [
       'galeria-01.jpg', 'galeria-02.jpg', 'galeria-03.jpg', 'galeria-04.jpg',
       'galeria-05.jpg', 'galeria-06.jpg', 'galeria-07.jpg', 'galeria-08.jpg',
@@ -997,24 +1026,38 @@
     let carouselTimer = null;
     const INTERVALO = 8000; // troca a cada 8 segundos
 
-    // Monta os slides
+    // Função que substitui a imagem por um aviso se ela não carregar
+    function fallbackImg(img, nome) {
+      img.outerHTML =
+        '<div class="img-fallback">📷 ' + nome +
+        '<br><small>imagem não encontrada no repositório</small></div>';
+    }
+
+    // Monta os slides do carrossel
     GALERIA_CARROSSEL.forEach((img, i) => {
       const slide = document.createElement('div');
       slide.className = 'carousel-slide';
-      slide.innerHTML = `
-        <img src="${img}" alt="Foto ${i + 1} da VEAP" />
-        <div class="slide-caption">VEAP <span>•</span> Vila Ema Auto Peças</div>
-      `;
+      const foto = document.createElement('img');
+      foto.src = img;
+      foto.alt = 'Foto ' + (i + 1) + ' da VEAP';
+      foto.onerror = function () { fallbackImg(this, img); };
+      slide.appendChild(foto);
+
+      const caption = document.createElement('div');
+      caption.className = 'slide-caption';
+      caption.innerHTML = 'VEAP <span>•</span> Vila Ema Auto Peças';
+      slide.appendChild(caption);
+
       // Clicar na foto abre a galeria completa
       slide.addEventListener('click', () => abrirLightbox(i));
       track.appendChild(slide);
     });
 
-    // Monta as bolinhas
+    // Monta as bolinhas de navegação
     GALERIA_CARROSSEL.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.className = 'carousel-dot';
-      dot.setAttribute('aria-label', `Ir para foto ${i + 1}`);
+      dot.setAttribute('aria-label', 'Ir para foto ' + (i + 1));
       dot.addEventListener('click', () => {
         irParaSlide(i);
         reiniciarTimer();
@@ -1024,7 +1067,7 @@
 
     function irParaSlide(index) {
       slideAtual = (index + GALERIA_CARROSSEL.length) % GALERIA_CARROSSEL.length;
-      track.style.transform = `translateX(-${slideAtual * 100}%)`;
+      track.style.transform = 'translateX(-' + (slideAtual * 100) + '%)';
       document.querySelectorAll('.carousel-dot').forEach((d, i) => {
         d.classList.toggle('active', i === slideAtual);
       });
@@ -1059,7 +1102,18 @@
     GALERIA_COMPLETA.forEach((img, i) => {
       const thumb = document.createElement('div');
       thumb.className = 'lightbox-thumb';
-      thumb.innerHTML = `<img src="${img}" alt="${img}" /><span class="thumb-name">${img}</span>`;
+
+      const foto = document.createElement('img');
+      foto.src = img;
+      foto.alt = img;
+      foto.onerror = function () { fallbackImg(this, img); };
+      thumb.appendChild(foto);
+
+      const nome = document.createElement('span');
+      nome.className = 'thumb-name';
+      nome.textContent = img;
+      thumb.appendChild(nome);
+
       thumb.addEventListener('click', () => abrirViewer(i));
       lightboxGrid.appendChild(thumb);
     });
@@ -1084,6 +1138,9 @@
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox) fecharLightbox();
     });
+
+    // Botão "Ver galeria completa"
+    document.getElementById('btnGaleriaCompleta').addEventListener('click', () => abrirLightbox());
 
     // ---------- VISUALIZADOR EM TELA CHEIA ----------
     const viewer = document.getElementById('viewer');
@@ -1144,7 +1201,7 @@
 
     function renderMarcas() {
       const criarCards = (lista) =>
-        lista.map((marca) => `<div class="brand-card">${marca}</div>`).join('');
+        lista.map((marca) => '<div class="brand-card">' + marca + '</div>').join('');
 
       document.getElementById('marcasNacionais').innerHTML = criarCards(MARCAS_NACIONAIS);
       document.getElementById('marcasImportadas').innerHTML = criarCards(MARCAS_IMPORTADAS);
