@@ -95,7 +95,6 @@
       height: 80px;
     }
 
-    /* Logotipo do topo: maior (64px) */
     .brand-logo {
       height: 64px;
       width: auto;
@@ -141,10 +140,10 @@
 
     /* ===== HERO ===== */
     .hero {
-      padding: 190px 0 110px;
+      padding: 200px 0 110px;
       background:
         repeating-linear-gradient(-45deg, rgba(57, 255, 20, 0.04) 0 2px, transparent 2px 26px),
-        radial-gradient(circle at 50% 15%, rgba(57, 255, 20, 0.16), transparent 55%),
+        radial-gradient(circle at 50% 15%, rgba(57, 255, 20, 0.18), transparent 55%),
         var(--preto);
       border-bottom: 1px solid var(--borda);
       overflow: hidden;
@@ -153,13 +152,38 @@
 
     .hero-inner { display: flex; flex-direction: column; align-items: center; }
 
-    /* Logotipo grande e destacado no centro da página principal */
+    /* ===== LOGOTIPO GRANDE E DESTACADO ===== */
+    .hero-logo-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    /* Halo verde atrás do logotipo */
+    .hero-logo-wrap::before {
+      content: '';
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(57, 255, 20, 0.35), rgba(57, 255, 20, 0.08) 55%, transparent 70%);
+      animation: halo-pulse 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes halo-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
     .hero-logo {
-      width: min(300px, 60vw);
+      position: relative;
+      width: min(340px, 65vw);
       height: auto;
-      margin-bottom: 28px;
-      filter: drop-shadow(0 0 25px rgba(57, 255, 20, 0.7))
-              drop-shadow(0 0 60px rgba(57, 255, 20, 0.35));
+      filter: drop-shadow(0 0 30px rgba(57, 255, 20, 0.75))
+              drop-shadow(0 0 70px rgba(57, 255, 20, 0.4));
       animation: logo-pulse 3s ease-in-out infinite;
     }
 
@@ -239,6 +263,274 @@
     }
 
     .section-sub { color: var(--cinza); margin-top: 12px; }
+
+    /* ===== GALERIA ANIMADA (CARROSSEL) ===== */
+    .galeria {
+      background: var(--preto);
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .carousel {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--borda);
+      box-shadow: 0 0 40px rgba(57, 255, 20, 0.12);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.7s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 460px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .carousel-slide .slide-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 40px 24px 18px;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+      font-family: var(--font-titulo);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--branco);
+      text-align: center;
+    }
+
+    .carousel-slide .slide-caption span { color: var(--verde); }
+
+    /* Setas */
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(10, 10, 10, 0.6);
+      border: 1px solid var(--verde);
+      color: var(--verde);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      transition: background 0.2s, transform 0.2s;
+      backdrop-filter: blur(4px);
+    }
+
+    .carousel-btn:hover { background: var(--verde); color: var(--preto); }
+
+    .carousel-btn.prev { left: 14px; }
+    .carousel-btn.next { right: 14px; }
+
+    /* Bolinhas de navegação */
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--borda);
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .carousel-dot.active {
+      background: var(--verde);
+      box-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+      transform: scale(1.2);
+    }
+
+    .galeria-hint {
+      text-align: center;
+      margin-top: 16px;
+      color: var(--cinza);
+      font-size: 0.9rem;
+    }
+
+    .galeria-hint span { color: var(--verde); }
+
+    /* ===== LIGHTBOX / GALERIA COMPLETA ===== */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 5, 5, 0.96);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .lightbox-title {
+      font-family: var(--font-titulo);
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--verde);
+    }
+
+    .lightbox-close {
+      background: none;
+      border: 1px solid var(--borda);
+      color: var(--branco);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .lightbox-close:hover { border-color: var(--verde); color: var(--verde); }
+
+    /* Grade de miniaturas */
+    .lightbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .lightbox-thumb {
+      position: relative;
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      background: var(--grafite);
+    }
+
+    .lightbox-thumb:hover {
+      border-color: var(--verde);
+      transform: translateY(-4px);
+      box-shadow: 0 0 18px rgba(57, 255, 20, 0.35);
+    }
+
+    .lightbox-thumb img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .lightbox-thumb .thumb-name {
+      display: block;
+      padding: 8px;
+      font-size: 0.75rem;
+      color: var(--cinza);
+      text-align: center;
+      font-family: var(--font-titulo);
+      letter-spacing: 0.5px;
+    }
+
+    /* Visualizador em tela cheia */
+    .viewer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.97);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    .viewer.open { display: flex; }
+
+    .viewer img {
+      max-width: 92vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 0 60px rgba(57, 255, 20, 0.25);
+    }
+
+    .viewer-name {
+      margin-top: 16px;
+      color: var(--cinza);
+      font-family: var(--font-titulo);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .viewer-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: 1px solid var(--borda);
+      color: var(--branco);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      cursor: pointer;
+      z-index: 5;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .viewer-close:hover { border-color: var(--verde); color: var(--verde); }
+
+    .viewer-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(10, 10, 10, 0.7);
+      border: 1px solid var(--verde);
+      color: var(--verde);
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      transition: background 0.2s;
+    }
+
+    .viewer-nav:hover { background: var(--verde); color: var(--preto); }
+    .viewer-nav.prev { left: 20px; }
+    .viewer-nav.next { right: 20px; }
 
     /* ===== MARCAS ===== */
     .marcas {
@@ -459,9 +751,13 @@
       }
 
       .nav-links.open { transform: translateY(0); }
-      .hero { padding: 160px 0 80px; }
+      .hero { padding: 170px 0 80px; }
       .hero-stats { gap: 28px; }
       .brand-logo { height: 52px; }
+      .carousel-slide img { height: 280px; }
+      .hero-logo-wrap::before { width: 300px; height: 300px; }
+      .viewer-nav.prev { left: 8px; }
+      .viewer-nav.next { right: 8px; }
     }
   </style>
 </head>
@@ -476,9 +772,9 @@
 
       <nav class="nav-links" id="navLinks">
         <a href="#inicio">Início</a>
+        <a href="#galeria">Galeria</a>
         <a href="#marcas">Marcas e Fornecedores</a>
         <a href="#produtos">Produtos</a>
-        <a href="#diferenciais">Diferenciais</a>
         <a href="#contato">Contato</a>
         <a href="#" class="btn btn-whatsapp nav-whatsapp" data-whatsapp>WhatsApp</a>
       </nav>
@@ -493,8 +789,10 @@
   <section class="hero" id="inicio">
     <div class="container hero-inner">
 
-      <!-- Logotipo grande e destacado -->
-      <img src="logo-veap.png" alt="VEAP — Vila Ema Auto Peças" class="hero-logo" />
+      <!-- Logotipo grande e destacado com halo -->
+      <div class="hero-logo-wrap">
+        <img src="logo-veap.png" alt="VEAP — Vila Ema Auto Peças" class="hero-logo" />
+      </div>
 
       <p class="hero-tag">⚡ Vila Ema Auto Peças</p>
       <h1 class="hero-title">A peça certa,<br />na <span class="highlight">hora certa</span>.</h1>
@@ -504,13 +802,36 @@
       </p>
       <div class="hero-actions">
         <a href="#" class="btn btn-whatsapp btn-lg" data-whatsapp>Falar no WhatsApp</a>
-        <a href="#marcas" class="btn btn-outline btn-lg">Ver marcas</a>
+        <a href="#galeria" class="btn btn-outline btn-lg">Ver fotos</a>
       </div>
       <div class="hero-stats">
         <div class="stat"><strong>Nacionais</strong><span>e importadas</span></div>
         <div class="stat"><strong>Atendimento</strong><span>direto no WhatsApp</span></div>
         <div class="stat"><strong>Qualidade</strong><span>em cada peça</span></div>
       </div>
+    </div>
+  </section>
+
+  <!-- GALERIA ANIMADA -->
+  <section class="galeria" id="galeria">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-tag">Nosso espaço</p>
+        <h2 class="section-title">Galeria de Fotos</h2>
+        <p class="section-sub">Conheça a VEAP. Clique em qualquer foto para ver a galeria completa.</p>
+      </div>
+
+      <div class="carousel" id="carousel">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- Slides gerados pelo JavaScript -->
+        </div>
+
+        <button class="carousel-btn prev" id="carouselPrev" aria-label="Foto anterior">&#10094;</button>
+        <button class="carousel-btn next" id="carouselNext" aria-label="Próxima foto">&#10095;</button>
+      </div>
+
+      <div class="carousel-dots" id="carouselDots"></div>
+      <p class="galeria-hint">💡 Toque em uma foto para abrir a <span>galeria completa</span></p>
     </div>
   </section>
 
@@ -610,8 +931,32 @@
     </svg>
   </a>
 
+  <!-- LIGHTBOX: GALERIA COMPLETA -->
+  <div class="lightbox" id="lightbox">
+    <div class="container">
+      <div class="lightbox-header">
+        <h3 class="lightbox-title">📷 Galeria Completa</h3>
+        <button class="lightbox-close" id="lightboxClose" aria-label="Fechar">&#10005;</button>
+      </div>
+      <div class="lightbox-grid" id="lightboxGrid"></div>
+    </div>
+  </div>
+
+  <!-- VISUALIZADOR EM TELA CHEIA -->
+  <div class="viewer" id="viewer">
+    <button class="viewer-close" id="viewerClose" aria-label="Fechar">&#10005;</button>
+    <button class="viewer-nav prev" id="viewerPrev" aria-label="Anterior">&#10094;</button>
+    <img id="viewerImg" src="" alt="Foto ampliada" />
+    <p class="viewer-name" id="viewerName"></p>
+    <button class="viewer-nav next" id="viewerNext" aria-label="Próxima">&#10095;</button>
+  </div>
+
   <script>
-    // ---- CONFIGURAÇÕES ----
+    // ============================================
+    // VEAP — Vila Ema Auto Peças
+    // ============================================
+
+    // ---------- CONFIGURAÇÕES ----------
     const WHATSAPP_NUMBER = '5511962082138';
     const WHATSAPP_MESSAGE = encodeURIComponent('Olá! Vim pelo site da VEAP e gostaria de mais informações.');
     const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
@@ -622,7 +967,168 @@
       el.setAttribute('rel', 'noopener');
     });
 
-    // ---- MARCAS E FORNECEDORES ----
+    // ---------- IMAGENS DA GALERIA ----------
+    // Fotos que aparecem no carrossel animado (na ordem que você indicou)
+    const GALERIA_CARROSSEL = [
+      'galeria-02.jpg',
+      'galeria-10.jpg',
+      'galeria-04.jpg',
+      'galeria-12.jpg',
+      'galeria-06.jpg',
+      'galeria-14.jpg'
+    ];
+
+    // TODAS as imagens do repositório (galeria completa).
+    // >>> IMPORTANTE: ajuste esta lista para conter EXATAMENTE os arquivos
+    // que estão no seu repositório. Se tiver mais ou menos fotos, edite aqui.
+    const GALERIA_COMPLETA = [
+      'galeria-01.jpg', 'galeria-02.jpg', 'galeria-03.jpg', 'galeria-04.jpg',
+      'galeria-05.jpg', 'galeria-06.jpg', 'galeria-07.jpg', 'galeria-08.jpg',
+      'galeria-09.jpg', 'galeria-10.jpg', 'galeria-11.jpg', 'galeria-12.jpg',
+      'galeria-13.jpg', 'galeria-14.jpg', 'galeria-15.jpg', 'galeria-16.jpg'
+    ];
+
+    // ---------- CARROSSEL ANIMADO ----------
+    const track = document.getElementById('carouselTrack');
+    const dotsContainer = document.getElementById('carouselDots');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    let slideAtual = 0;
+    let carouselTimer = null;
+    const INTERVALO = 8000; // troca a cada 8 segundos
+
+    // Monta os slides
+    GALERIA_CARROSSEL.forEach((img, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+      slide.innerHTML = `
+        <img src="${img}" alt="Foto ${i + 1} da VEAP" />
+        <div class="slide-caption">VEAP <span>•</span> Vila Ema Auto Peças</div>
+      `;
+      // Clicar na foto abre a galeria completa
+      slide.addEventListener('click', () => abrirLightbox(i));
+      track.appendChild(slide);
+    });
+
+    // Monta as bolinhas
+    GALERIA_CARROSSEL.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      dot.setAttribute('aria-label', `Ir para foto ${i + 1}`);
+      dot.addEventListener('click', () => {
+        irParaSlide(i);
+        reiniciarTimer();
+      });
+      dotsContainer.appendChild(dot);
+    });
+
+    function irParaSlide(index) {
+      slideAtual = (index + GALERIA_CARROSSEL.length) % GALERIA_CARROSSEL.length;
+      track.style.transform = `translateX(-${slideAtual * 100}%)`;
+      document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === slideAtual);
+      });
+    }
+
+    function proximoSlide() { irParaSlide(slideAtual + 1); }
+    function slideAnterior() { irParaSlide(slideAtual - 1); }
+
+    prevBtn.addEventListener('click', () => { slideAnterior(); reiniciarTimer(); });
+    nextBtn.addEventListener('click', () => { proximoSlide(); reiniciarTimer(); });
+
+    function iniciarTimer() {
+      carouselTimer = setInterval(proximoSlide, INTERVALO);
+    }
+
+    function reiniciarTimer() {
+      clearInterval(carouselTimer);
+      iniciarTimer();
+    }
+
+    // Pausa ao passar o mouse
+    const carousel = document.getElementById('carousel');
+    carousel.addEventListener('mouseenter', () => clearInterval(carouselTimer));
+    carousel.addEventListener('mouseleave', iniciarTimer);
+
+    // ---------- LIGHTBOX (GALERIA COMPLETA) ----------
+    const lightbox = document.getElementById('lightbox');
+    const lightboxGrid = document.getElementById('lightboxGrid');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    // Monta as miniaturas de todas as imagens do repositório
+    GALERIA_COMPLETA.forEach((img, i) => {
+      const thumb = document.createElement('div');
+      thumb.className = 'lightbox-thumb';
+      thumb.innerHTML = `<img src="${img}" alt="${img}" /><span class="thumb-name">${img}</span>`;
+      thumb.addEventListener('click', () => abrirViewer(i));
+      lightboxGrid.appendChild(thumb);
+    });
+
+    function abrirLightbox(slideIndex) {
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      // Se veio do carrossel, abre direto o visualizador na foto correspondente
+      if (slideIndex !== undefined) {
+        const nome = GALERIA_CARROSSEL[slideIndex];
+        const idxCompleto = GALERIA_COMPLETA.indexOf(nome);
+        abrirViewer(idxCompleto >= 0 ? idxCompleto : 0);
+      }
+    }
+
+    function fecharLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    lightboxClose.addEventListener('click', fecharLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) fecharLightbox();
+    });
+
+    // ---------- VISUALIZADOR EM TELA CHEIA ----------
+    const viewer = document.getElementById('viewer');
+    const viewerImg = document.getElementById('viewerImg');
+    const viewerName = document.getElementById('viewerName');
+    const viewerClose = document.getElementById('viewerClose');
+    const viewerPrev = document.getElementById('viewerPrev');
+    const viewerNext = document.getElementById('viewerNext');
+    let viewerIndex = 0;
+
+    function abrirViewer(index) {
+      viewerIndex = (index + GALERIA_COMPLETA.length) % GALERIA_COMPLETA.length;
+      viewerImg.src = GALERIA_COMPLETA[viewerIndex];
+      viewerName.textContent = GALERIA_COMPLETA[viewerIndex];
+      viewer.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function fecharViewer() {
+      viewer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function viewerProximo() { abrirViewer(viewerIndex + 1); }
+    function viewerAnterior() { abrirViewer(viewerIndex - 1); }
+
+    viewerClose.addEventListener('click', fecharViewer);
+    viewerPrev.addEventListener('click', viewerAnterior);
+    viewerNext.addEventListener('click', viewerProximo);
+    viewer.addEventListener('click', (e) => {
+      if (e.target === viewer) fecharViewer();
+    });
+
+    // Teclado: ESC fecha, setas navegam
+    document.addEventListener('keydown', (e) => {
+      if (viewer.classList.contains('open')) {
+        if (e.key === 'Escape') fecharViewer();
+        if (e.key === 'ArrowRight') viewerProximo();
+        if (e.key === 'ArrowLeft') viewerAnterior();
+      } else if (lightbox.classList.contains('open') && e.key === 'Escape') {
+        fecharLightbox();
+      }
+    });
+
+    // ---------- MARCAS E FORNECEDORES ----------
     const MARCAS_NACIONAIS = [
       'Fiat', 'Volkswagen', 'Chevrolet', 'Ford', 'Toyota', 'Honda',
       'Hyundai', 'Renault', 'Peugeot', 'Citroën', 'Jeep', 'Nissan',
@@ -644,7 +1150,7 @@
       document.getElementById('marcasImportadas').innerHTML = criarCards(MARCAS_IMPORTADAS);
     }
 
-    // ---- PRODUTOS ----
+    // ---------- PRODUTOS ----------
     // Para cadastrar um produto, adicione um novo item no array abaixo.
     // Campos: nome, categoria, descricao, preco
     const PRODUTOS = [
@@ -695,7 +1201,7 @@
       ).join('');
     }
 
-    // ---- MENU MOBILE ----
+    // ---------- MENU MOBILE ----------
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
 
@@ -708,16 +1214,18 @@
       link.addEventListener('click', () => navLinks.classList.remove('open'));
     });
 
-    // ---- NAVBAR AO ROLAR ----
+    // ---------- NAVBAR AO ROLAR ----------
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.scrollY > 40);
     });
 
-    // ---- ANO NO RODAPÉ ----
+    // ---------- ANO NO RODAPÉ ----------
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ---- INICIALIZAÇÃO ----
+    // ---------- INICIALIZAÇÃO ----------
+    irParaSlide(0);
+    iniciarTimer();
     renderMarcas();
     renderProdutos();
   </script>
