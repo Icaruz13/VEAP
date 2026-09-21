@@ -140,7 +140,7 @@
 
     /* ===== HERO ===== */
     .hero {
-      padding: 200px 0 110px;
+      padding: 200px 0 100px;
       background:
         repeating-linear-gradient(-45deg, rgba(57, 255, 20, 0.04) 0 2px, transparent 2px 26px),
         radial-gradient(circle at 50% 15%, rgba(57, 255, 20, 0.18), transparent 55%),
@@ -152,7 +152,6 @@
 
     .hero-inner { display: flex; flex-direction: column; align-items: center; }
 
-    /* ===== LOGOTIPO GRANDE E DESTACADO ===== */
     .hero-logo-wrap {
       position: relative;
       display: flex;
@@ -181,8 +180,7 @@
       position: relative;
       width: min(340px, 65vw);
       height: auto;
-      filter: drop-shadow(0 0 30px rgba(57, 255, 20, 0.75))
-              drop-shadow(0 0 70px rgba(57, 255, 20, 0.4));
+      filter: drop-shadow(0 0 30px rgba(57, 255, 20, 0.75)) drop-shadow(0 0 70px rgba(57, 255, 20, 0.4));
       animation: logo-pulse 3s ease-in-out infinite;
     }
 
@@ -223,7 +221,7 @@
     .hero-stats {
       display: flex;
       gap: 48px;
-      margin-top: 56px;
+      margin-top: 48px;
       flex-wrap: wrap;
       justify-content: center;
     }
@@ -263,7 +261,7 @@
 
     .section-sub { color: var(--cinza); margin-top: 12px; }
 
-    /* ===== GALERIA ANIMADA (CARROSSEL) ===== */
+    /* ===== GALERIA / CARROSSEL (JÁ VISÍVEL NA PÁGINA PRINCIPAL) ===== */
     .galeria {
       background: var(--preto);
       border-bottom: 1px solid var(--borda);
@@ -277,6 +275,26 @@
       overflow: hidden;
       border: 1px solid var(--borda);
       box-shadow: 0 0 40px rgba(57, 255, 20, 0.12);
+      cursor: pointer;
+    }
+
+    /* Chame atencao: efeito para indicar que e clicavel */
+    .carousel::after {
+      content: '🔍 Clique para ver a galeria completa';
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(10, 10, 10, 0.75);
+      border: 1px solid var(--verde);
+      color: var(--verde);
+      font-size: 0.8rem;
+      padding: 8px 14px;
+      border-radius: 24px;
+      z-index: 6;
+      opacity: 0.9;
+      pointer-events: none;
+      font-family: var(--font-titulo);
+      letter-spacing: 0.5px;
     }
 
     .carousel-track {
@@ -314,7 +332,6 @@
 
     .carousel-slide .slide-caption span { color: var(--verde); }
 
-    /* Aviso quando a imagem não carregar */
     .img-fallback {
       width: 100%;
       height: 460px;
@@ -355,7 +372,6 @@
     }
 
     .carousel-btn:hover { background: var(--verde); color: var(--preto); }
-
     .carousel-btn.prev { left: 14px; }
     .carousel-btn.next { right: 14px; }
 
@@ -380,20 +396,6 @@
       background: var(--verde);
       box-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
       transform: scale(1.2);
-    }
-
-    .galeria-hint {
-      text-align: center;
-      margin-top: 16px;
-      color: var(--cinza);
-      font-size: 0.9rem;
-    }
-
-    .galeria-hint span { color: var(--verde); }
-
-    .galeria-actions {
-      text-align: center;
-      margin-top: 24px;
     }
 
     /* ===== LIGHTBOX / GALERIA COMPLETA ===== */
@@ -758,7 +760,6 @@
       box-shadow: 0 8px 26px rgba(37, 211, 102, 0.55);
     }
 
-    /* ===== RESPONSIVO ===== */
     @media (max-width: 768px) {
       .menu-toggle { display: flex; }
 
@@ -812,11 +813,10 @@
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO (LOGOTIPO + FRASES) -->
   <section class="hero" id="inicio">
     <div class="container hero-inner">
 
-      <!-- Logotipo grande e destacado com halo -->
       <div class="hero-logo-wrap">
         <img src="logo-veap.png" alt="VEAP — Vila Ema Auto Peças" class="hero-logo" />
       </div>
@@ -839,18 +839,18 @@
     </div>
   </section>
 
-  <!-- ===== GALERIA ANIMADA ===== -->
+  <!-- CARROSSEL DE FOTOS (JÁ VISÍVEL, PASSA SOZINHO) -->
   <section class="galeria" id="galeria">
     <div class="container">
       <div class="section-head">
         <p class="section-tag">Nosso espaço</p>
         <h2 class="section-title">Galeria de Fotos</h2>
-        <p class="section-sub">Conheça a VEAP. Clique em qualquer foto para ver a galeria completa.</p>
+        <p class="section-sub">Clique no carrossel para ver a galeria completa.</p>
       </div>
 
       <div class="carousel" id="carousel">
         <div class="carousel-track" id="carouselTrack">
-          <!-- Os slides são criados pelo JavaScript -->
+          <!-- Slides criados pelo JS, já exibidos na página -->
         </div>
 
         <button class="carousel-btn prev" id="carouselPrev" aria-label="Foto anterior">&#10094;</button>
@@ -858,11 +858,6 @@
       </div>
 
       <div class="carousel-dots" id="carouselDots"></div>
-      <p class="galeria-hint">💡 Toque em uma foto para abrir a <span>galeria completa</span></p>
-
-      <div class="galeria-actions">
-        <button class="btn btn-outline btn-lg" id="btnGaleriaCompleta">Ver galeria completa</button>
-      </div>
     </div>
   </section>
 
@@ -999,7 +994,7 @@
     });
 
     // ---------- IMAGENS DA GALERIA ----------
-    // Fotos que aparecem no carrossel animado (na ordem que você indicou)
+    // Fotos que aparecem no carrossel (já na página principal)
     const GALERIA_CARROSSEL = [
       'galeria-02.jpg',
       'galeria-10.jpg',
@@ -1017,7 +1012,7 @@
       'galeria-13.jpg', 'galeria-14.jpg', 'galeria-15.jpg', 'galeria-16.jpg'
     ];
 
-    // ---------- CARROSSEL ANIMADO ----------
+    // ---------- CARROSSEL (JÁ VISÍVEL NA PÁGINA) ----------
     const track = document.getElementById('carouselTrack');
     const dotsContainer = document.getElementById('carouselDots');
     const prevBtn = document.getElementById('carouselPrev');
@@ -1026,17 +1021,17 @@
     let carouselTimer = null;
     const INTERVALO = 8000; // troca a cada 8 segundos
 
-    // Função que substitui a imagem por um aviso se ela não carregar
     function fallbackImg(img, nome) {
       img.outerHTML =
         '<div class="img-fallback">📷 ' + nome +
         '<br><small>imagem não encontrada no repositório</small></div>';
     }
 
-    // Monta os slides do carrossel
+    // Monta os slides (exibidos imediatamente)
     GALERIA_CARROSSEL.forEach((img, i) => {
       const slide = document.createElement('div');
       slide.className = 'carousel-slide';
+
       const foto = document.createElement('img');
       foto.src = img;
       foto.alt = 'Foto ' + (i + 1) + ' da VEAP';
@@ -1048,17 +1043,18 @@
       caption.innerHTML = 'VEAP <span>•</span> Vila Ema Auto Peças';
       slide.appendChild(caption);
 
-      // Clicar na foto abre a galeria completa
-      slide.addEventListener('click', () => abrirLightbox(i));
+      // Clicar no slide abre a GALERIA COMPLETA (grade de miniaturas)
+      slide.addEventListener('click', () => abrirLightbox());
       track.appendChild(slide);
     });
 
-    // Monta as bolinhas de navegação
+    // Monta as bolinhas
     GALERIA_CARROSSEL.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.className = 'carousel-dot';
       dot.setAttribute('aria-label', 'Ir para foto ' + (i + 1));
-      dot.addEventListener('click', () => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
         irParaSlide(i);
         reiniciarTimer();
       });
@@ -1076,8 +1072,8 @@
     function proximoSlide() { irParaSlide(slideAtual + 1); }
     function slideAnterior() { irParaSlide(slideAtual - 1); }
 
-    prevBtn.addEventListener('click', () => { slideAnterior(); reiniciarTimer(); });
-    nextBtn.addEventListener('click', () => { proximoSlide(); reiniciarTimer(); });
+    prevBtn.addEventListener('click', (e) => { e.stopPropagation(); slideAnterior(); reiniciarTimer(); });
+    nextBtn.addEventListener('click', (e) => { e.stopPropagation(); proximoSlide(); reiniciarTimer(); });
 
     function iniciarTimer() {
       carouselTimer = setInterval(proximoSlide, INTERVALO);
@@ -1093,12 +1089,14 @@
     carousel.addEventListener('mouseenter', () => clearInterval(carouselTimer));
     carousel.addEventListener('mouseleave', iniciarTimer);
 
+    // Clicar no carrossel (fundo área) abre a galeria completa
+    carousel.addEventListener('click', () => abrirLightbox());
+
     // ---------- LIGHTBOX (GALERIA COMPLETA) ----------
     const lightbox = document.getElementById('lightbox');
     const lightboxGrid = document.getElementById('lightboxGrid');
     const lightboxClose = document.getElementById('lightboxClose');
 
-    // Monta as miniaturas de todas as imagens do repositório
     GALERIA_COMPLETA.forEach((img, i) => {
       const thumb = document.createElement('div');
       thumb.className = 'lightbox-thumb';
@@ -1118,15 +1116,9 @@
       lightboxGrid.appendChild(thumb);
     });
 
-    function abrirLightbox(slideIndex) {
+    function abrirLightbox() {
       lightbox.classList.add('open');
       document.body.style.overflow = 'hidden';
-      // Se veio do carrossel, abre direto o visualizador na foto correspondente
-      if (slideIndex !== undefined) {
-        const nome = GALERIA_CARROSSEL[slideIndex];
-        const idxCompleto = GALERIA_COMPLETA.indexOf(nome);
-        abrirViewer(idxCompleto >= 0 ? idxCompleto : 0);
-      }
     }
 
     function fecharLightbox() {
@@ -1138,9 +1130,6 @@
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox) fecharLightbox();
     });
-
-    // Botão "Ver galeria completa"
-    document.getElementById('btnGaleriaCompleta').addEventListener('click', () => abrirLightbox());
 
     // ---------- VISUALIZADOR EM TELA CHEIA ----------
     const viewer = document.getElementById('viewer');
@@ -1174,7 +1163,6 @@
       if (e.target === viewer) fecharViewer();
     });
 
-    // Teclado: ESC fecha, setas navegam
     document.addEventListener('keydown', (e) => {
       if (viewer.classList.contains('open')) {
         if (e.key === 'Escape') fecharViewer();
@@ -1208,8 +1196,6 @@
     }
 
     // ---------- PRODUTOS ----------
-    // Para cadastrar um produto, adicione um novo item no array abaixo.
-    // Campos: nome, categoria, descricao, preco
     const PRODUTOS = [
       {
         nome: 'Pastilha de Freio',
